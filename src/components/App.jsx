@@ -13,13 +13,12 @@ export const App = () => {
   }, [dispatch]);
 
   return (
-  
-      <div>
-        <h1 className="title">Phonebook</h1>
-        <ContactForm />
-        <Filter />
-        <ContactList />
-      </div>
+    <div>
+      <h1 className="title">Phonebook</h1>
+      <ContactForm />
+      <Filter />
+      <ContactList />
+    </div>
   );
 };
 
