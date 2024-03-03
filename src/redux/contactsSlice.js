@@ -9,6 +9,11 @@ const initialState = {
   error: null,
 };
 
+// Common handler for pending states
+const handlePending = state => {
+  state.loading = true;
+};
+
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
@@ -19,9 +24,7 @@ const contactsSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchContacts.pending, state => {
-        state.loading = true;
-      })
+      .addCase(fetchContacts.pending, handlePending)
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.contacts = action.payload;
         state.loading = false;
@@ -30,13 +33,25 @@ const contactsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+      .addCase(addContact.pending, handlePending)
       .addCase(addContact.fulfilled, (state, action) => {
         state.contacts.push(action.payload);
+        state.loading = false;
       })
+      .addCase(addContact.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteContact.pending, handlePending)
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.contacts = state.contacts.filter(
           contact => contact.id !== action.payload
         );
+        state.loading = false;
+      })
+      .addCase(deleteContact.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
